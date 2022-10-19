@@ -2,17 +2,20 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import useQuizDetails from '../../hooks/useQuizDetails';
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 
 const QuizDetails = () => {
 
     const { QuizID } = useParams();
     const [quizs] = useQuizDetails(QuizID);
-    console.log(quizs);
+    // console.log(quizs);
     const [score, setScore] = useState(0);
     const [blockQuesttion, setBlockQuestion] = useState([]);
     const [correctAnswer, setCorrectanswer] = useState(false);
     const [clickAnswerID, setClickanswerId] = useState(null);
     const [index, setIndex] = useState(null);
+    // const [showAnswer, setShowanswer] = useState(false);
+    const [clickedQuestionID, setClickquestionID] = useState(null);
 
     const handleCorrectAnswer = (op, i, correct, ansID) => {
         setBlockQuestion((prev) => [...prev, ansID]);
@@ -27,6 +30,10 @@ const QuizDetails = () => {
             setCorrectanswer(false);
         }
     }
+
+    const showrightAnswer = (questionID) =>{
+        setClickquestionID(questionID);
+    }
     return (
         <>
             <div className='container'>
@@ -39,6 +46,10 @@ const QuizDetails = () => {
                                         <div className='questions'>
                                             <p className='question'>{que.question.slice(3, -4)}</p>
                                             <div className='answer'>
+                                                {clickedQuestionID === que.id ?  <h3>{que?.correctAnswer}</h3> : ''}
+
+                                                <AiOutlineEye  onClick={() => showrightAnswer(que.id)}/>
+                                                {/* <AiOutlineEyeInvisible onClick={() => setShowanswer(false)}/> */}
                                                 <div className='col-lg-6 col-md-6 col-12'>
                                                     {
                                                         que.options.map((option, i) => {
@@ -46,7 +57,7 @@ const QuizDetails = () => {
                                                                 <>
                                                                     <button className={clickAnswerID === que.id && index === i ? correctAnswer ? 'btn btn-success' : 'btn btn-danger' : 'btn btn-secondary'} style={{
                                                                         width: "100%",
-                                                                        marginBottom: "10px"   
+                                                                        marginBottom: "10px"
                                                                     }} disabled={blockQuesttion.includes(que.id)} onClick={() => handleCorrectAnswer(option, i, que.correctAnswer, que.id)}>{option}</button>
                                                                 </>
                                                             );
@@ -63,9 +74,9 @@ const QuizDetails = () => {
                     <div className="col-lg-4 col-md-6 col-12">
                         <div className='Score'>
                             {
-                                score > 0 ? `The score is ${score}` : <p>The score is not available</p> 
+                                score > 0 ? `The score is ${score}` : <p>The score is not available</p>
                             }
-                            
+
                         </div>
                     </div>
 
