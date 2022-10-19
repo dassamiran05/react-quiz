@@ -14,7 +14,7 @@ const QuizDetails = () => {
     const [correctAnswer, setCorrectanswer] = useState(false);
     const [clickAnswerID, setClickanswerId] = useState(null);
     const [index, setIndex] = useState(null);
-    // const [showAnswer, setShowanswer] = useState(false);
+    const [showAnswer, setShowanswer] = useState(false);
     const [clickedQuestionID, setClickquestionID] = useState(null);
 
     const handleCorrectAnswer = (op, i, correct, ansID) => {
@@ -31,8 +31,13 @@ const QuizDetails = () => {
         }
     }
 
-    const showrightAnswer = (questionID) =>{
+    const showrightAnswer = (questionID) => {
         setClickquestionID(questionID);
+        setShowanswer(true);
+    }
+    const hiderightAnswer = (questionID) => {
+        setClickquestionID(questionID);
+        setShowanswer(false);
     }
     return (
         <>
@@ -46,10 +51,9 @@ const QuizDetails = () => {
                                         <div className='questions'>
                                             <p className='question'>{que.question.slice(3, -4)}</p>
                                             <div className='answer'>
-                                                {clickedQuestionID === que.id ?  <h3>{que?.correctAnswer}</h3> : ''}
-
-                                                <AiOutlineEye  onClick={() => showrightAnswer(que.id)}/>
-                                                {/* <AiOutlineEyeInvisible onClick={() => setShowanswer(false)}/> */}
+                                                {clickedQuestionID === que.id ? showAnswer ? <h3>{que?.correctAnswer}</h3> : '' : ''}
+                                                <AiOutlineEye onClick={() => showrightAnswer(que.id)} />
+                                                <AiOutlineEyeInvisible onClick={() => hiderightAnswer(que.id)} />
                                                 <div className='col-lg-6 col-md-6 col-12'>
                                                     {
                                                         que.options.map((option, i) => {
