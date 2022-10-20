@@ -17,6 +17,8 @@ const QuizDetails = () => {
     const [showAnswer, setShowanswer] = useState(false);
     const [clickedQuestionID, setClickquestionID] = useState(null);
 
+
+
     const handleCorrectAnswer = (op, i, correct, ansID) => {
         setBlockQuestion((prev) => [...prev, ansID]);
         setClickanswerId(ansID);
@@ -29,6 +31,7 @@ const QuizDetails = () => {
             toast.error("Wrong answer");
             setCorrectanswer(false);
         }
+
     }
 
     const showrightAnswer = (questionID) => {
@@ -52,8 +55,13 @@ const QuizDetails = () => {
                                             <p className='question'>{que.question.slice(3, -4)}</p>
                                             <div className='answer'>
                                                 {clickedQuestionID === que.id ? showAnswer ? <h3>{que?.correctAnswer}</h3> : '' : ''}
-                                                <AiOutlineEye onClick={() => showrightAnswer(que.id)} />
-                                                <AiOutlineEyeInvisible onClick={() => hiderightAnswer(que.id)} />
+                                                {
+                                                    clickedQuestionID === que.id && showAnswer ? <AiOutlineEyeInvisible onClick={() => hiderightAnswer(que.id)} /> 
+                                                    :
+                                                    <AiOutlineEye onClick={() => showrightAnswer(que.id)} />
+                                                }
+                                                
+                                                
                                                 <div className='col-lg-6 col-md-6 col-12'>
                                                     {
                                                         que.options.map((option, i) => {
